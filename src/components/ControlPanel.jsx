@@ -31,22 +31,22 @@ export function ControlPanel({ isMobile }) {
         width: isMobile ? '100%' : '360px',
       }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
+      {/* Header — whole bar is tappable so it reopens even where the
+          action bar overlaps the right edge on mobile */}
+      <button
+        onClick={() => setCollapsed(c => !c)}
+        aria-label={collapsed ? 'Expand controls' : 'Collapse controls'}
+        className="w-full flex items-center justify-between px-4 py-3 border-b border-white/[0.06] text-haze-400 hover:text-haze-200 transition-colors"
+        style={{ paddingRight: isMobile ? 60 : undefined }}
+      >
         <span
           className="font-hanken text-haze-200"
           style={{ fontSize: 12, letterSpacing: '0.06em' }}
         >
           Controls
         </span>
-        <button
-          onClick={() => setCollapsed(c => !c)}
-          className="text-haze-400 hover:text-haze-200 transition-colors p-0.5"
-          aria-label={collapsed ? 'Expand controls' : 'Collapse controls'}
-        >
-          {collapsed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-        </button>
-      </div>
+        {collapsed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+      </button>
 
       <AnimatePresence>
         {!collapsed && (
