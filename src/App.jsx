@@ -33,6 +33,9 @@ export default function App() {
   const lastTime = useRef(performance.now());
   const [hasWebGL] = useState(checkWebGL); // lazy initializer → runs exactly once
   const [exportOpen, setExportOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 768
+  );
 
   const reducedMotion = usePrefersReducedMotion();
 
@@ -53,6 +56,14 @@ export default function App() {
   useEffect(() => {
     setReducedMotion(reducedMotion);
   }, [reducedMotion]);
+
+  // Keep the mobile/desktop layout in sync with viewport changes
+  // (rotation, window resize) instead of snapshotting once at mount.
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   useEffect(() => {
     let rafId;
@@ -95,8 +106,6 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey);
   }, [randomize, togglePause, toggleUI, applyScene]);
 
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-
   if (!hasWebGL) {
     return <NoWebGL />;
   }
@@ -113,10 +122,10 @@ export default function App() {
 
       {uiVisible ? (
         <>
-          <Wordmark />
-          <Readout fpsRef={fpsRef} sceneName={sceneName} count={count} seed={seed} />
+          <Wordmark isMobile={isMobile} />
+          <Readout fpsRef={fpsRef} sceneName={sceneName} count={count} seed={seed} isMobile={isMobile} />
           <ControlPanel isMobile={isMobile} />
-          <ActionBar glRef={glRef} onExport={() => setExportOpen(true)} />
+          <ActionBar glRef={glRef} onExport={() => setExportOpen(true)} isMobile={isMobile} />
         </>
       ) : (
         <button

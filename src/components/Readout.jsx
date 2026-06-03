@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
-export function Readout({ fpsRef, sceneName, count, seed }) {
+export function Readout({ fpsRef, sceneName, count, seed, isMobile }) {
   const [fps, setFps] = useState(60);
   const seedHex = (seed >>> 0).toString(16).padStart(8, '0').slice(0, 6).toUpperCase();
 
@@ -16,7 +16,8 @@ export function Readout({ fpsRef, sceneName, count, seed }) {
 
   return (
     <motion.div
-      className="fixed top-6 right-8 z-10 text-right select-none pointer-events-none"
+      className="fixed right-8 z-10 text-right select-none pointer-events-none"
+      style={{ top: isMobile ? '4.25rem' : '1.5rem' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 0.6 }}
       transition={{ delay: 1.2, duration: 0.8 }}

@@ -14,7 +14,9 @@ const FORCE_OPTIONS = [
 ];
 
 export function ControlPanel({ isMobile }) {
-  const [collapsed, setCollapsed] = useState(false);
+  // On mobile the panel is a bottom sheet — start collapsed so the scene
+  // fills the screen, the way Aurora does it.
+  const [collapsed, setCollapsed] = useState(isMobile);
   const {
     count, flow, drift, forceMode, forceRadius, forceStrength,
     haze, focus, bokeh, bloom, sceneName, setParam, applyScene,
@@ -22,7 +24,11 @@ export function ControlPanel({ isMobile }) {
 
   const panel = (
     <motion.div
-      className="rounded-2xl overflow-hidden border border-white/[0.07]"
+      className={
+        (isMobile
+          ? 'rounded-t-2xl border-t border-x'
+          : 'rounded-2xl border') + ' overflow-hidden border-white/[0.07]'
+      }
       style={{
         background: 'rgba(16, 13, 28, 0.72)',
         backdropFilter: 'blur(24px)',
@@ -31,13 +37,11 @@ export function ControlPanel({ isMobile }) {
         width: isMobile ? '100%' : '360px',
       }}
     >
-      {/* Header — whole bar is tappable so it reopens even where the
-          action bar overlaps the right edge on mobile */}
+      {/* Whole header bar is tappable to expand/collapse the sheet. */}
       <button
         onClick={() => setCollapsed(c => !c)}
         aria-label={collapsed ? 'Expand controls' : 'Collapse controls'}
         className="w-full flex items-center justify-between px-4 py-3 border-b border-white/[0.06] text-haze-400 hover:text-haze-200 transition-colors"
-        style={{ paddingRight: isMobile ? 60 : undefined }}
       >
         <span
           className="font-hanken text-haze-200"
@@ -103,7 +107,7 @@ export function ControlPanel({ isMobile }) {
   if (isMobile) {
     return (
       <motion.div
-        className="fixed bottom-0 left-0 right-0 z-20 px-3 pb-3"
+        className="fixed bottom-0 left-0 right-0 z-20"
         initial={{ y: 60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.5 }}

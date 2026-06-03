@@ -22,7 +22,7 @@ function ActionBtn({ onClick, title, children, active }) {
   );
 }
 
-export function ActionBar({ glRef, onExport }) {
+export function ActionBar({ glRef, onExport, isMobile }) {
   const [showHint, setShowHint] = useState(false);
   const { randomize, togglePause, toggleUI, paused } = useDriftStore();
 
@@ -36,7 +36,11 @@ export function ActionBar({ glRef, onExport }) {
 
   return (
     <motion.div
-      className="fixed bottom-6 right-6 z-20 flex flex-col gap-1.5"
+      className={
+        isMobile
+          ? 'fixed top-6 right-6 z-30 flex flex-row gap-1.5'
+          : 'fixed bottom-6 right-6 z-20 flex flex-col gap-1.5'
+      }
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.6, duration: 0.5 }}
@@ -62,7 +66,10 @@ export function ActionBar({ glRef, onExport }) {
 
       {showHint && (
         <motion.div
-          className="absolute bottom-0 right-10 rounded-xl border border-white/10 p-3 whitespace-nowrap"
+          className={
+            (isMobile ? 'top-10 right-0' : 'bottom-0 right-10') +
+            ' absolute rounded-xl border border-white/10 p-3 whitespace-nowrap'
+          }
           style={{
             background: 'rgba(16,13,28,0.92)',
             backdropFilter: 'blur(16px)',

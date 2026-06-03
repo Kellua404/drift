@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export function Wordmark() {
+export function Wordmark({ isMobile }) {
   return (
     <motion.div
       className="fixed top-6 left-8 z-10 select-none pointer-events-none"
@@ -19,15 +19,19 @@ export function Wordmark() {
       >
         Drift
       </motion.h1>
-      <motion.p
-        className="font-fraunces text-haze-200 mt-1"
-        style={{ fontSize: '1rem', fontStyle: 'italic', fontWeight: 300 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-      >
-        A dream you can move through.
-      </motion.p>
+      {/* Tagline would collide with the top-right action bar / readout on
+          narrow screens, so drop it on mobile and let the wordmark stand alone. */}
+      {!isMobile && (
+        <motion.p
+          className="font-fraunces text-haze-200 mt-1"
+          style={{ fontSize: '1rem', fontStyle: 'italic', fontWeight: 300 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          A dream you can move through.
+        </motion.p>
+      )}
     </motion.div>
   );
 }
