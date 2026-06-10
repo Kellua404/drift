@@ -2,7 +2,7 @@
 
 > A 3D dreamscape you move through — instanced spring-physics, bloom & bokeh. react-three-fiber.
 
-**[Live demo](https://drift-five-sage.vercel.app)** · part of [my portfolio](https://portfolio-delta-snowy-rw5w2y5pf8.vercel.app)
+**[Live demo](https://drift.ayoubalkak.com)** · part of [my portfolio](https://ayoubalkak.com)
 
 ![Drift](docs/poster.jpg)
 
